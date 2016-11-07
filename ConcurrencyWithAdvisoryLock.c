@@ -18,10 +18,11 @@ main (int argc, char *argv[]) {
     if (fd < 0) {printf ("OPEN Error (PADRE)...\n"); exit (1);}
     flock (fd, LOCK_EX);
     read (fd, (char *)&saldo, sizeof(saldo));    
-    printf ("P: saldo = %d\n", saldo);
+    printf ("P: saldo inicial = %d\n", saldo);
     lseek (fd, 0, SEEK_SET);
     saldo = saldo + atoi(argv[2]);
-    write (fd, (char *)&saldo, sizeof(saldo));    
+    write (fd, (char *)&saldo, sizeof(saldo));
+	printf("P: saldo después de los cambios = %d\n", saldo);
     close (fd);
     flock (fd, LOCK_UN);
     exit (0);
@@ -31,10 +32,11 @@ main (int argc, char *argv[]) {
     if (fd < 0) {printf ("OPEN Error (HIJO)...\n"); exit (1);}
     flock (fd, LOCK_EX);
     read (fd, (char *)&saldo, sizeof(saldo));    
-    printf ("H: saldo = %d\n", saldo);
+    printf ("H: saldo inicial = %d\n", saldo);
     lseek (fd, 0, SEEK_SET);
     saldo = saldo + atoi(argv[3]);
-    write (fd, (char *)&saldo, sizeof(saldo));    
+    write (fd, (char *)&saldo, sizeof(saldo));
+	printf("H: saldo después de los cambios = %d\n", saldo);
     close (fd);
     flock (fd, LOCK_UN);
     exit (0);
